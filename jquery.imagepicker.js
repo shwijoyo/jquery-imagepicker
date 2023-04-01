@@ -3,34 +3,16 @@
         let Picker = (function () {
             function Picker(original) {
                 this.$original = $(original);
-                this.$main = $(`
-				<div style="position: fixed; top: 0px; left: 0px; width: ${$(window).width()}px; height: ${$(window).height()}px; background-color: #00000044">
-				<div style="position: relative; width: ${$(window).width() - 20}px; height: ${$(window).height() - 20}px; background-color: #fefefe; margin: 10px;">
-				<input type="button" value="Upload image" style="position: absolute; top: 10px; left: 10px; width: 100px; height: 40px;" />
-				<input type="text" placeholder="Import image url..." style="position: absolute; top: 10px; left: 110px; width: ${$(window).width() - 140}px; height: 40px; padding: 0px 10px" />
-				<input type="button" value="Previous" style="position: absolute; width: 90px; height: 30px; bottom: 10px; left: 10px;"/>
-		<input type="button" value="Next" style="position: absolute; width: 90px; height: 30px; bottom: 10px; left: 100px;"/>
-		<input type="button" value="Cancel" style="position: absolute; width: 90px; height: 30px; bottom: 10px; right: 10px;"/>
-				<div style="position: absolute; top: 50px; left: 0px; width: 100%; height: 70px;">
-				<div class="gcse-search"></div>
-				</div>
-				<div style="position: absolute; top: 120px; left: 10px; width: ${$(window).width() - 40}px; height: ${$(window).height() - 190}px; overflow-y: scroll">
-				<div class="list" style="position: absolute; top: 0px; left: 0px; width: ${($(window).width() - 40) / 3}px;" ></div>
-				<div class="list" style="position: absolute; top: 0px; left: ${($(window).width() - 40) / 3}px; width: ${($(window).width() - 40) / 3}px;" ></div>
-				<div class="list" style="position: absolute; top: 0px; left: ${(($(window).width() - 40) / 3) * 2}px; width: ${($(window).width() - 40) / 3}px;" ></div>
-				</div>
-				
-				
-				</div>
-				</div>
-				`);
-                this.$file = $(`<input type="file" accept="image/*" style="display: none"/>`);
-                this.$list = this.$main.find(".list");
-                this.$import = this.$main.find("input[type=text]").eq(0);
-                this.$upload = this.$main.find("input[type=button]").eq(0);
-                this.$prev = this.$main.find("input[type=button]").eq(1);
-                this.$next = this.$main.find("input[type=button]").eq(2);
-                this.$cancel = this.$main.find("input[type=button]").eq(3);
+                
+                this.$main = $(`<div />`);
+                this.$wrap = $(`<div />`);
+                this.$file = $(`<input />`);
+                this.$upload = $(`<input />`);
+                this.$import = $(`<input />`);
+                this.$prev = $("<input />");
+                this.$next = $("<input />");
+                this.$cancel = $("<input />");
+                this.$list = $("<div />");
                 this.initialize();
                 this.event();
             }
@@ -39,19 +21,30 @@
                 page: 0,
                 pagelast: 0,
                 initialize: function () {
-                    this.$main.css({ display: "none" });
-                    this.$original.after(this.$main);
+                    this.$main.css({position: `fixed`, top: `0px`, left: `0px`, width: `${$(window).width()}px`, height: `${$(window).height()}px`, backgroundColor: `#00000044`}).insertAfter(this.$original).hide();
+                    this.$wrap.css({position: `relative`, width: `${$(window).width() - 20}px`, height: `${$(window).height() - 20}px`, backgroundColor: `#fefefe`, margin: `10px`}).appendTo(this.$main);
+                    this.$upload.attr({type:`button`,value: `Upload image`}).css({position: `absolute`, top: `10px`, left: `10px`, width: `100px`, height: `40px`}).appendTo(this.$wrap);
+                    this.$import.attr({type:`text`,placeholder: `Import image url...`}).css({position: `absolute`, top: `10px`, left: `110px`, width: `${$(window).width() - 140}px`, height: `40px`, padding: `0px 10px`}).appendTo(this.$wrap);
+                    $(`<div />`).css({position: `absolute`, top: `50px`, left: `0px`, width: `100%`, height: `70px`}).append($(`<div />`).addClass(`gcse-search`)).appendTo(this.$wrap);
+                    this.$prev.attr({type: `button`, value: `Prev`}).css({position: `absolute`, width: `90px`, height: `30px`, bottom: `10px`, left: `10px`}).appendTo(this.$wrap);
+                    this.$next.attr({type: `button`, value: `Next`}).css({position: `absolute`, width: `90px`, height: `30px`, bottom: `10px`, left: `100px`}).appendTo(this.$wrap);
+                    this.$cancel.attr({type: `button`, value: `Cancel`}).css({position: `absolute`, width: `90px`, height: `30px`, bottom: `10px`, right: `10px`}).appendTo(this.$wrap);
+                    this.$list.css({position: `absolute`, width: `${$(window).width()-40}px`, height: `${$(window). height()-190}px`, top: `120px`, left: `10px`, overflowY: `scroll`}).append($(`<div />`).css({position: `absolute`, top: `0px`, left: `0px`, width: `${($(window).width() - 40) / 3}px`})).append($(`<div />`).css({position: `absolute`, top: `0px`, left: `${($(window).width() - 40) / 3}px`, width: `${($(window).width() - 40) / 3}px`})).append($(`<div />`).css({position: `absolute`, top: `0px`, left: `${(($(window).width() - 40) / 3) * 2}px`, width: `${($(window).width() - 40) / 3}px`})).appendTo(this.$wrap);
+                    this.$file.attr({type:"file",accept:"image/*"}).hide();
+                    
+                    
                     this.data = window.localStorage.getItem(imgbbkey) !== null ? JSON.parse(window.localStorage.getItem(imgbbkey)) : this.data;
 
                     $.getScript("https://cse.google.com/cse.js?cx=d60776a4e66fa425e");
                 },
                 event: function () {
+                	let picker = this;
                     let ti = undefined;
                     this.$original.on("click", function () {
-                        picker.$main.css({ display: "block" });
+                        picker.$main.show();
                         picker.render();
                     });
-                    this.$upload.on("click", function () {
+                   this.$upload.on("click", function () {
                         picker.$file.click();
                     });
                     this.$file.on("change", function () {
@@ -117,8 +110,9 @@
                     });
                 },
                 render: function () {
+                	let picker = this;
                     this.pagelast = (this.data.length + (24 - (this.data.length % 24))) / 24 - 1;
-                    this.$list.html(``);
+                    this.$list.children().html(``);
                     this.page == 0 ? this.$prev.attr("disabled", true) : this.$prev.removeAttr("disabled");
                     this.page == this.pagelast ? this.$next.attr("disabled", true) : this.$next.removeAttr("disabled");
                     let dataslice = this.data.slice(this.page * 24, this.page * 24 + 24);
@@ -129,18 +123,19 @@
                             picker.$main.css({ display: "none" });
                         });
                         if (i % 3 == 0) {
-                            picker.$list.eq(0).append($img);
+                            picker.$list.children().eq(0).append($img);
                         } else if (i % 3 == 1) {
-                            picker.$list.eq(1).append($img);
+                            picker.$list.children().eq(1).append($img);
                         } else if (i % 3 == 2) {
-                            picker.$list.eq(2).append($img);
+                            picker.$list.children().eq(2).append($img);
                         }
                     });
                 },
             };
             return Picker;
         })();
-        let picker = new Picker(this);
-        return this;
+        return this.each(function (){
+        	new Picker(this);
+        	});
     };
 })(jQuery);
