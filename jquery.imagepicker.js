@@ -21,7 +21,7 @@
                 page: 0,
                 pagelast: 0,
                 initialize: function () {
-                    this.$main.css({position: `fixed`, top: `0px`, left: `0px`, width: `${$(window).width()}px`, height: `${$(window).height()}px`, backgroundColor: `#00000044`}).insertAfter(this.$original).hide();
+                    this.$main.css({position: `fixed`, top: `0px`, left: `0px`, width: `${$(window).width()}px`, height: `${$(window).height()}px`, backgroundColor: `#00000044`}).appendTo("body").hide();
                     this.$wrap.css({position: `relative`, width: `${$(window).width() - 20}px`, height: `${$(window).height() - 20}px`, backgroundColor: `#fefefe`, margin: `10px`}).appendTo(this.$main);
                     this.$upload.attr({type:`button`,value: `Upload image`}).css({position: `absolute`, top: `10px`, left: `10px`, width: `100px`, height: `40px`}).appendTo(this.$wrap);
                     this.$import.attr({type:`text`,placeholder: `Import image url...`}).css({position: `absolute`, top: `10px`, left: `110px`, width: `${$(window).width() - 140}px`, height: `40px`, padding: `0px 10px`}).appendTo(this.$wrap);
