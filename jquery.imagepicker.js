@@ -117,10 +117,11 @@
                     this.page == this.pagelast ? this.$next.attr("disabled", true) : this.$next.removeAttr("disabled");
                     let dataslice = this.data.slice(this.page * 24, this.page * 24 + 24);
                     $.each(dataslice, function (i, v) {
-                        let $img = $(`<img alt="image-${i}" loading="lazy" src="${v}" style="margin: 2px; width: 100%; height: auto" />`).on("click", function () {
+                        let $img = $(`<img />`).attr({alt:`image-${i}`, loading:`lazy`, src:`${v}`}).css({margin: `2px`, width: `100%`, height: `auto`}).on("click", function () {
                             picker.$original.val(this.src);
-                            callback(this.src);
+                            callback({url: this.src, width: this.width, height: this.height});
                             picker.$main.css({ display: "none" });
+                            console.log({url: this.src, width: this.width, height: this.height});
                         });
                         if (i % 3 == 0) {
                             picker.$list.children().eq(0).append($img);
