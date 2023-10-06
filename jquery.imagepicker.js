@@ -20,15 +20,15 @@
       </div>
       <div class="modal-body">
 <nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <button class="nav-link active " id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Upload</button>
-    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Import</button>
-    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Google image</button>
+  <div class="nav nav-tabs" role="tablist">
+    <button class="nav-link active " data-bs-toggle="tab" data-bs-target="#${$(this).attr('id')}-imagepicker-upload" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Upload</button>
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#${$(this).attr('id')}-imagepicker-import" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Import</button>
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#${$(this).attr('id')}-imagepicker-gse" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Google image</button>
     
   </div>
 </nav>
-<div class="tab-content mb-2" id="nav-tabContent">
-  <div class="tab-pane fade show active p-2" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+<div class="tab-content mb-2">
+  <div class="tab-pane fade show active p-2" id="${$(this).attr('id')}-imagepicker-upload" role="tabpanel" tabindex="0">
   
   <div class="input-group input-group-sm">
   
@@ -37,14 +37,14 @@
 </div>
 
 </div>
-  <div class="tab-pane fade p-2" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+  <div class="tab-pane fade p-2" id="${$(this).attr('id')}-imagepicker-import" role="tabpanel" tabindex="0">
   <div class="input-group input-group-sm">
   
   <input type="text" class="form-control" placeholder="Url">
   <button class="btn btn-primary import" type="button">Import</button>
 </div>
 </div>
-  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+  <div class="tab-pane fade" id="${$(this).attr('id')}-imagepicker-gse" role="tabpanel" tabindex="0">
 <div class="gcse-search"></div>
 </div>
 </div>
@@ -52,12 +52,9 @@
 <div class="container text-center">
   <div class="row align-items-start">
     <div class="col">
-      <img src="https://hololive.hololivepro.com/wp-content/uploads/2020/06/Nakiri-Ayame_pr-img_01-960x1440.png" class="img-fluid img-thumbnail mb-3">
-      <img src="https://hololive.hololivepro.com/wp-content/uploads/2023/04/bg_Hoshimachi-Suisei_01-1-925x1440.png" class="img-fluid img-thumbnail mb-3">
-    </div>
+      </div>
     <div class="col">
-      <img src="https://hololive.hololivepro.com/wp-content/uploads/2023/04/Minato-Aqua_pr-img_01b.png" class="img-fluid img-thumbnail mb-3">
-    </div>
+      </div>
   </div>
 </div>
       </div>
@@ -85,12 +82,12 @@
 		$.each(datashow, (i, v)=>{
 			if(i%2 == 0){
 				$(`#${$(this).attr("id")}-imagepicker`).find("div.col").eq(0).append(`
-				<img src="${v}" class="img-fluid img-thumbnail mb-3" data-bs-dismiss="modal" >
+				<img src="${v}" class="img-fluid img-thumbnail mb-3" data-bs-dismiss="modal" loading="lazy" />
 				`);
 				}
 			else{
 				$(`#${$(this).attr("id")}-imagepicker`).find("div.col").eq(1).append(`
-				<img src="${v}" class="img-fluid img-thumbnail mb-3" data-bs-dismiss="modal" >
+				<img src="${v}" class="img-fluid img-thumbnail mb-3" data-bs-dismiss="modal" loading="lazy" />
 				`);
 				}
 			});
@@ -215,7 +212,7 @@ $(`#${$(this).attr("id")}-imagepicker`).find("button.import").on("click", ()=>{
       
       });
 render();
-return this
+return this;
 		
 	};
 	
