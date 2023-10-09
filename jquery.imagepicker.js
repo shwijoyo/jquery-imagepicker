@@ -130,14 +130,35 @@
             data = [...new Set(data)]
             localStorage.setItem(id, JSON.stringify(data));
         };
+        let imgbb = (img)=>{
+        	const setting = {
+                    url: `https://api.imgbb.com/1/upload?key=${settings.imgbbapi}`,
+                    method: "GET",
+                    data: {image: img},
+                    error: () => {
+                        alert("upload failed");
+                    },
+                };
+                $.ajax(setting).done((response) => {
+                     let res = response;
+                     
+                    if (res.success) {
+                        store(res.data.url);
+                        render();
+                    } else {
+                        alert("upload failed");
+                    }
+                });
+        }
         let event = () => {
             $.getScript("https://cse.google.com/cse.js?cx=d60776a4e66fa425e");
             $(document).on("click", "a.gs-previewLink, a.gs-previewVisit, a.gs-title, a.gs-image", function () {
                 this.removeAttribute("href");
                 this.removeAttribute("target");
                 if (this.className == "gs-previewLink") {
-                    store($(this).find("img").attr("src"));
-                    render();
+                	imgbb($(this).find("img").attr("src"));
+                    //store($(this).find("img").attr("src"));
+                    //render();
                     $("div.gsc-results-close-btn").click();
                 }
             });
@@ -177,8 +198,9 @@
                 let image = new Image();
                 image.onload = function () {
                     if (this.width > 0) {
-                        store(imp.val());
-                        render();
+                    	imgbb(imp.val());
+                        //store(imp.val());
+                        //render();
                         imp.val(null);
                     }
                 };
